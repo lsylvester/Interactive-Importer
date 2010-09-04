@@ -1,0 +1,1 @@
+gem 'active_record', '~> 3.0.0'
