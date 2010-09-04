@@ -2,10 +2,10 @@
 lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
  
-require 'csv-importer/version'
+require 'interactive-importer/version'
  
 Gem::Specification.new do |s|
-  s.name        = "csv-importer"
+  s.name        = "interactive-importer"
   s.version     = CsvImporter::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Lachlan Sylvester"]
