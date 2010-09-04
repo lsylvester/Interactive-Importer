@@ -30,4 +30,21 @@ describe CsvRow do
     @other_row.record.last_name.should == @other_row.content[0]
   end
 
+  it "should delete itself after a successful import" do
+    @row.import
+    @row.should be_destroyed
+  end
+  
+  it "should not delete itself after a failed successful import" do
+    @row.content = ["",""] # valid data to import
+    @row.import
+    @row.should_not be_destroyed
+  end
+  
+  it "should have errors like those on the record after a failed import" do
+    @row.content = ["",""] # valid data to import
+    @row.import
+    @row.errors[:last_name].should_not be_blank
+  end
+  
 end
