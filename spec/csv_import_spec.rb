@@ -13,13 +13,11 @@ describe PersonImport do
     before(:each) do
       @import = PersonImport.new(:file => File.open(File.dirname(__FILE__) + '/people.csv'))
       @import.save!
-      @import.reload
     end
     
     it "should have generated to csv_rows" do
       @import.should have(2).csv_rows 
     end
-    
     
   end
 end
