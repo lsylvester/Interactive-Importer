@@ -5,12 +5,12 @@ require 'rspec'
 require 'rspec/autorun'
 require 'active_record'
 require 'sqlite3'
-require 'fileutils'
-FileUtils.rm 'test.db' if File.exists? 'test.db'
+
 ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => 'test.db')
 require 'schema'
 class Person < ActiveRecord::Base
+  validates :last_name, :presence => true
 end
 
-class PersonImporter < CsvImport
+class PersonImport < CsvImport
 end
