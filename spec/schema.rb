@@ -12,6 +12,7 @@ ActiveRecord::Schema.define do
   end
   
   create_table :csv_imports, :force => true do |t|
+    t.text     :columns
     t.string   :file_name
     t.string   :target
     t.string   :type

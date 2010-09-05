@@ -10,5 +10,5 @@ class Person < ActiveRecord::Base
   validates :last_name, :presence => true
 end
 
-class PersonImport < CsvImport
+class PersonImport <  InteractiveImporter::CsvImport
 end
