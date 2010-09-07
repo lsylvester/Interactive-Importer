@@ -48,6 +48,18 @@ module InteractiveImporter
       @row.import
       @row.errors[:last_name].should_not be_blank
     end
+    
+    it "should update an existing row if it matches based on id" do
+      @existing_person = Person.create(:first_name => "Old First Name", :last_name => "Old Last Name")
+      @row.content = [@existing_person.id,"New First Name","New Last Name"]
+      @row.csv_import.columns= ["id","first_name", "last_name"]
+      lambda {
+        @row.import
+      }.should_not change(Person, :count)
+      @existing_person.reload
+      @existing_person.first_name.should == "New First Name"
+      @existing_person.last_name.should == "New Last Name"
+    end
   
   end
 end

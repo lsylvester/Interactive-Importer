@@ -4,7 +4,17 @@ module InteractiveImporter
     belongs_to :csv_import, :inverse_of => :csv_rows
   
     def import
-      @record = csv_import.target_class.create to_hash
+      if csv_import.columns.include?("id")
+        id = content[columns.index("id")]
+        @record = csv_import.target_class.find_by_id(id)
+        if @record
+          @record.update_attributes(to_hash)
+        else
+          @record = csv_import.target_class.create to_hash
+        end
+      else
+        @record = csv_import.target_class.create to_hash
+      end
       destroy unless @record.new_record?
     end
   
