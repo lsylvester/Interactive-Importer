@@ -4,18 +4,35 @@ module InteractiveImporter
     belongs_to :csv_import, :inverse_of => :csv_rows
   
     def import
+      if @record = record_to_merge
+        update_record
+      else
+        create_record
+      end
+    end
+    
+    def update_record
+      if @record.update_attributes(to_hash)
+        update_attribute(:state, 'merged')
+      else
+        update_attribute(:state, 'error')
+      end
+    end
+    
+    def record_to_merge
       if csv_import.columns.include?("id")
         id = content[columns.index("id")]
-        @record = csv_import.target_class.find_by_id(id)
-        if @record
-          @record.update_attributes(to_hash)
-        else
-          @record = csv_import.target_class.create to_hash
-        end
-      else
-        @record = csv_import.target_class.create to_hash
+        csv_import.target_class.find_by_id(id)
       end
-      destroy unless @record.new_record?
+    end
+    
+    def create_record
+      @record = csv_import.target_class.create to_hash
+      if @record.new_record?
+        update_attribute(:state, 'error')
+      else
+        update_attribute(:state, 'added')
+      end
     end
   
     attr_reader :record
@@ -36,6 +53,14 @@ module InteractiveImporter
             hash[column] = content[columns.index(column)]
           end
         end
+      end
+    end
+    
+    STATES = %w(added merged new error)
+    
+    STATES.each do |state|
+      define_method "#{state}?".to_sym do
+        state == self.state
       end
     end
   end

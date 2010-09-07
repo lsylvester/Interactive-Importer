@@ -32,9 +32,9 @@ module InteractiveImporter
       @other_row.record.last_name.should == @other_row.content[0]
     end
 
-    it "should delete itself after a successful import" do
+    it "should be marked as added after a successful import" do
       @row.import
-      @row.should be_destroyed
+      @row.state.should == "added"
     end
   
     it "should not delete itself after a failed successful import" do
@@ -59,6 +59,7 @@ module InteractiveImporter
       @existing_person.reload
       @existing_person.first_name.should == "New First Name"
       @existing_person.last_name.should == "New Last Name"
+      @row.state.should == 'merged'
     end
   
   end

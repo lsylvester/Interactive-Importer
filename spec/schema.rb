@@ -8,6 +8,7 @@ ActiveRecord::Schema.define do
     t.integer :number
     t.text :content
     t.integer :csv_import_id
+    t.string :state
     t.timestamps
   end
   
